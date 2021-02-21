@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.Timestamp;
 
 import javax.persistence.EntityManager;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import models.Task;
+import models.validators.MessageValidator;
 import utils.DButil;
 
 /**
@@ -45,6 +47,17 @@ public class CreateServlet extends HttpServlet {
             t.setCreated_at(currentTime);
             t.setUpdated_at(currentTime);
 
+            String error = MessageValidator.validate(t);
+            if(! error.equals("")){
+                em.close();
+                request.setAttribute("_token",request.getSession().getId());
+                request.setAttribute("task", t);
+                request.setAttribute("error", error);
+
+                RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/tasks/new.jsp");
+                rd.forward(request, response);
+            }else{
+
             em.getTransaction().begin();
             em.persist(t);
             em.getTransaction().commit();
@@ -56,4 +69,5 @@ public class CreateServlet extends HttpServlet {
 
     }
 
+}
 }
