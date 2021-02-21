@@ -25,7 +25,6 @@ public class ShowServlet extends HttpServlet {
      */
     public ShowServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
     /**

@@ -25,7 +25,6 @@ public class EditServlet extends HttpServlet {
      */
     public EditServlet() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
     /**
@@ -38,10 +37,13 @@ public class EditServlet extends HttpServlet {
         em.close();
 
         request.setAttribute("task", t);
-        request.setAttribute("_token", request.getSession().getId());
+        if(t != null){
+            request.setAttribute("_token", request.getSession().getId());
+        }
+
 
         request.getSession().setAttribute("task_id", t.getId());
-        RequestDispatcher rd = request.getRequestDispatcher("/WER-INF/views/tasks/edit.jsp");
+        RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/views/tasks/edit.jsp");
         rd.forward(request, response);
     }
 
